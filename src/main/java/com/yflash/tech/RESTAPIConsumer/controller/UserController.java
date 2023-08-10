@@ -25,9 +25,4 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/get-user-by-id", produces = "application/json", consumes = "application/json")
-    ResponseEntity<User> getUserById(@RequestParam("id") Integer id) {
-        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
-    }
-
 }

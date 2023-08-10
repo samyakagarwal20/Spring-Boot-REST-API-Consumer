@@ -44,10 +44,12 @@ public class UserServiceImpl implements UserService {
             MultiValueMap<String,String> queryParams = new LinkedMultiValueMap<>();
             queryParams.add("id","2");
 
+            LOGGER.info("Fetching users data ...");
             ResponseEntity<List> response = restTemplate.getForEntity(wsUrl, List.class, queryParams);
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 result = response.getBody();
+                LOGGER.info("Data fetched successfully !");
             }
         } catch (Exception e) {
             LOGGER.error("Error in getAllUsers() : {}", e.getMessage());

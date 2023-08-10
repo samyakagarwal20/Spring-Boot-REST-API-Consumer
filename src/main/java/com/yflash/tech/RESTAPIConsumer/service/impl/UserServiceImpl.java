@@ -35,16 +35,22 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() {
         List<User> result = null;
         try {
+            LOGGER.info("Preparing the request ...");
             String wsUrl = environment.getProperty("producer.api.url");
+            LOGGER.info("\t|--- Setting up the headers");
             HttpHeaders headers = new HttpHeaders();
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
+            LOGGER.info("\t|--- Setting up the request body");
             HttpEntity<String> reqEntity = new HttpEntity<>(headers);
             ParameterizedTypeReference<List<User>> responseType = new ParameterizedTypeReference<List<User>>() {};
+
+            LOGGER.info("Fetching users data ...");
             ResponseEntity<List<User>> response = restTemplate.exchange(wsUrl, HttpMethod.GET, reqEntity, responseType);
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 result = response.getBody();
+                LOGGER.info("Data fetched successfully !");
             }
         } catch (Exception e) {
             LOGGER.error("Error in getAllUsers() : {}", e.getMessage());

@@ -19,3 +19,15 @@ The following is how we can use the getForEntity() method
 ResponseEntity<List> response = restTemplate.getForEntity(wsUrl, List.class, queryParams)
 ```
 
+---
+## Approach 2: Using RestTemplate exchange() method
+
+The exchange() method is a more flexible option that allows you to perform any HTTP method (GET, POST, PUT, DELETE, etc.) and provides full control over the request and response. It returns a ResponseEntity object.
+
+The following is how we make use of exchange() method in general
+```
+HttpEntity<RequestType> requestEntity = new HttpEntity<>(request, headers);
+ResponseEntity<ResponseType> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, responseType);
+```
+
+

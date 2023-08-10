@@ -10,8 +10,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
@@ -37,15 +35,18 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() {
         List<User> result = null;
         try {
+            LOGGER.info("Preparing the request ...");
             String wsUrl = environment.getProperty("producer.api.url");
-            /**
-             * We can pass in the query parameters by creating a MultiValueMap<String,String>
-             */
-            MultiValueMap<String,String> queryParams = new LinkedMultiValueMap<>();
-            queryParams.add("id","2");
+            LOGGER.info("\t|--- Setting up the headers");
+            HttpHeaders headers = new HttpHeaders();
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+            LOGGER.info("\t|--- Setting up the request body");
+            HttpEntity<String> reqEntity = new HttpEntity<>(headers);
+            ParameterizedTypeReference<List<User>> responseType = new ParameterizedTypeReference<List<User>>() {};
 
             LOGGER.info("Fetching users data ...");
-            ResponseEntity<List> response = restTemplate.getForEntity(wsUrl, List.class, queryParams);
+            ResponseEntity<List<User>> response = restTemplate.exchange(wsUrl, HttpMethod.GET, reqEntity, responseType);
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 result = response.getBody();

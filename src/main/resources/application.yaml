@@ -3,3 +3,9 @@ server:
 spring:
   application:
     name: SPRING-BOOT-REST-API-CONSUMER
+restTemplate:
+  connectionTimeout: 0
+  readTimeout: 0
+producer:
+  api:
+    url: http://localhost:8080/user/get-all-users
